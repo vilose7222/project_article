@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/layoutV1 :: setContent(~{this :: title}, ~{this :: content})}">
+	
+	<th:block th:fragment="title">
+		<title>스프링 기반 게시판 연습페이지입니다.</title>
+	</th:block>
+
+	<th:block th:fragment="content">
+<!--  	groupNo=1,--> 
+	<div th:each="board : ${board}">
+		<div class="container-fluid"  >
+			<h2 class="mt-4">[[${board.title}]] 
+				<span> 
+				<a href="#" th:href="@{/board/create(boardId=${board.boardId})}"><button type="button" class="btn btn-success">게시글 쓰기</button></a>
+				</span>
+			</h2>
+			</div>
+			</div>
+			<hr>
+
+			<form th:action="@{/board/list(type=${type}, input=${input})}" method="get" id="searchForm">
+				<div class="input-group">
+					<input type="hidden" name="page" value="1">
+					<div class="input-group-prepend">
+						<select class="custom-select" name="type">
+							<option selected>----- 검색유형 -----</option>
+							<option value="subject">제목</option>
+							<option value="content">내용</option>
+							<option value="writer">작성자</option>
+							<option value="subject_content">제목 + 내용</option>
+							<option value="subject_content_writer">제목 + 내용 + 작성자</option>
+						</select>
+					</div>
+					<input type="search" class="form-control" name="input">
+					<div class="input-group-append" id="button-addon4">
+						<button class="btn btn-success btn-search" type="submit">검색</button>
+					</div>
+				</div>
+			</form>
+
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col" >번호</th>
+						<th scope="col">제목</th>
+						<th scope="col">작성자</th>
+						<th scope="col">조회수</th>
+						<th scope="col">등록일자</th>
+					</tr>
+				</thead>
+
+	<tbody>
+    <tr th:each="article, state : ${articles}">
+        <th scope="row" th:text="${state.count}">1</th>
+        <td>
+            <span th:if="${article.levelNo == 1}" th:utext="'↳'"></span> <!-- 답글 들여쓰기 -->
+            <span th:if="${article.levelNo == 2}" th:utext="'&nbsp;'+'&nbsp;'+'&nbsp;'+'&nbsp;'+'&nbsp;'+'↳'"></span> <!--대댓글 들여쓰기 -->
+            <a th:text="${article.subject}" th:href="@{/board/read/{articleId}(articleId=${article.articleId})}">
+                게시글 제목입니다.
+            </a>
+        </td>
+        <td th:text="${article.writer}">홍길동</td>
+        <td th:text="${article.hitcount}">5</td>
+        <td th:text="${article.regdate}">2023-05-05</td>
+        <th>
+            <a  th:if="${article.levelNo == 0 || article.levelNo == 1}" th:href="@{/board/reply/{articleId}(articleId=${article.articleId})}" th:text="답글">답글</a>
+        </th> 
+    </tr>
+</tbody>
+<!-- th:if="${article.levelNo == 0 || article.levelNo == 1}" -->
+			</table>
+
+			<ul
+				class="pagination h-100 justify-content-center align-items-center">
+
+				<li class="page-item" th:if="${pagination.showFirst} ?: '' "><a class="page-link" 
+					th:text="${pagination.showFirst} ? '처음' : '' " th:href="@{/board/list(boardId=${pageParams.boardId} , page=1)}" >처음으로</a></li>
+				
+				<li class="page-item" th:if="${pagination.showPrevious} ?: '' "><a class="page-link" 
+					th:text="${pagination.showFirst} ? '이전' : '' " th:href="@{/board/list(boardId=${pageParams.boardId}, page=${pagination.previousStartPage})}">이전목록</a></li>
+
+				<li class="page-item active" th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
+					<a class="page-link" href="#" th:text="${i}" th:href="@{/board/list(boardId=${pageParams.boardId} , page=${i},type=${type},input=${input})}">1</a>
+				</li>
+
+				<li class="page-item" th:if="${pagination.showNext} ?: '' "><a class="page-link" 
+					th:text="${pagination.showLast} ? '다음' : '' " th:href="@{/board/list(boardId=${pageParams.boardId}, page=${pagination.nextStartPage})}">다음목록</a></li>
+				<li class="page-item" th:if="${pagination.showLast} ?: '' "><a class="page-link" 
+					th:text="${pagination.showLast} ? '끝으로' : '' " th:href="@{/board/list(boardId=${pageParams.boardId}, page=${pagination.totalPages})}">끝으로</a></li>
+			</ul>
+		</div>
+	</th:block>
+</th:block>
+
+</html>

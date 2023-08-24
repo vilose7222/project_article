@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layout/layoutV1 :: setContent(~{this :: title}, ~{this :: content})}">
+  <th:block th:fragment="title">
+		<title>글쓰기 페이지</title>
+	</th:block>
+
+<th:block th:fragment="content">
+      <div class="container-fluid">
+        <h1 class="mt-4">게시글 상세</h1>
+        <hr>
+        
+        <form th:action="@{/board/update(articleId=${article.articleId})}" th:object="${article}" method="post">
+        <div class="form-group">
+          <label>게시글 번호</label>
+          <input type="text" class="form-control" value="100" th:field="*{articleId}" readonly>
+        </div>
+        <div class="form-group">
+          <label>제목</label>
+          <input type="text" class="form-control" value="게시글 제목입니다.." th:field="*{subject}" >
+        </div>
+        <div class="form-group">
+          <label>내용</label>
+          <textarea class="form-control" rows="5" th:field="*{content}" >게시글 내용입니다.</textarea>
+        </div>
+        <div class="form-group">
+          <label>작성자</label>
+          <input type="text" class="form-control"  value="홍길동" th:field="*{writer}" readonly>
+        </div>
+        <div class="form-group">
+          <label>등록일자</label>
+          <input type="text" class="form-control" name="regDate" value="2023-05-05" th:value="${article.regdate}" readonly>
+     
+          <input type="hidden" class="form-control"  th:value="${article.groupNo}" readonly>
+          <input type="hidden" class="form-control"  th:value="${article.levelNo}" readonly>
+          <input type="hidden" class="form-control"  th:value="${article.orderNo}" readonly>
+          <input type="hidden" class="form-control" name="regDate" value="2023-05-05" th:value="${article.passwd}" readonly>
+        </div>
+		
+        <a href="">
+          <button type="submit" class="btn btn-primary">수정하기</button>
+        </a> 
+         <a href="" th:href="@{/board/list}">
+          <button type="button" class="btn btn-danger">취소</button>
+        </a>
+       </form>
+      </div>
+</th:block>
+</th:block>
+
+</html>

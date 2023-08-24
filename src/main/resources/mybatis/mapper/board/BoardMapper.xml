@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+                        
+<!-- 네임스페이스 -->
+<mapper namespace="com.ezen.springmvc.domain.board.mapper.BoardMapper">
+
+	<!-- 신규 게시판 생성 -->
+	<insert id="create" parameterType="BoardDTO">
+		INSERT INTO board
+					(board_id,
+					 category, 
+					 title, 
+					 description)
+		VALUES 		(board_id_seq.NEXTVAL, 
+					#{category}, 
+					#{title}, 
+					#{description})
+	</insert>
+
+	<!--  전체 게시판 목록 반환 -->
+	<select id="findAll" resultType="BoardDTO">
+		SELECT	 board_id,
+		 		 category,
+		  		 title,
+		   		 description
+		FROM   	 board
+		WHERE	board_id = #{boardId}
+		ORDER BY board_id
+	</select>
+</mapper>

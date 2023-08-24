@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block
+	th:replace="~{/layout/layoutV1 :: setContent(~{this :: title}, ~{this :: content})}">
+
+	<th:block th:fragment="title">
+		<title>답글을 작성하세요</title>
+	</th:block>
+
+	<th:block th:fragment="content">
+		<div class="d-flex" id="wrapper">
+
+
+			<div class="container-fluid">
+				<h1 class="mt-4">답글 쓰기</h1>
+				<hr>
+				
+					
+					
+					<div class="form-group">
+						<label>본문 제목</label> <input type="text" class="form-control"
+							placeholder="Enter Title" th:value="${articleDTO.subject}" readonly>
+					</div>
+					<div class="form-group">
+						<label>본문 내용</label>
+						<textarea class="form-control" rows="2" th:text="${articleDTO.content}" readonly></textarea>
+					</div>
+					
+					
+					
+					<form th:action="@{/board/reply}" th:object="${articleDTO}"
+					method="post">
+					
+					<div class="form-group">
+						<label>제목</label> <input type="text" class="form-control"
+							placeholder="제목을 입력하세요" name="subject" >
+					</div>
+					<div class="form-group">
+						<label>내용</label>
+						<textarea class="form-control" rows="5" placeholder="내용을 입력하세요" name="content"></textarea>
+					</div>
+					<div class="form-group">
+						<label>작성자</label> <input type="text" class="form-control"
+							placeholder="작성자" name="writer" >
+					</div>
+
+					<div class="form-group">
+						<label>비밀번호</label> <input type="text" class="form-control"
+							placeholder="기억 가능한 번호로 입력하세요" name="passwd"> 
+							<input type="hidden"  th:field="*{boardId}">
+							<input type="hidden" th:field="*{groupNo}">
+							<input type="hidden" th:field="*{levelNo}">
+							<input type="hidden" th:field="*{articleId}">
+					</div>
+					<button type="submit" class="btn btn-success">Submit</button>
+				</form>
+			</div>
+		</div>
+
+	</th:block>
+</th:block>
+
+</html>
