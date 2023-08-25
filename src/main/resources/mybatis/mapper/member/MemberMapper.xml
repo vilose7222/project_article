@@ -6,14 +6,14 @@
 	namespace="com.ezen.springmvc.domain.member.mapper.MemberMapper">
 	<!-- 회원 전체 리스트 -->
 	<select id="findByAll" resultType="Member">
-		SELECT id, name, email
+		SELECT id, name, email,regdate,passwd
 		FROM
 		member
 	</select>
 	<!-- 아이디로 회원 조회 -->
 	<select id="findById" parameterType="string" resultType="Member">
 		SELECT
-		id, name, email, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate
+		id, name, email, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate,passwd
 		FROM member
 		WHERE id = #{value}
 	</select>
@@ -46,7 +46,8 @@
 	<update id="update" parameterType="Member">
 		UPDATE member
 		SET passwd =
-		#{passwd}
+		#{passwd},
+		email = #{email}
 		WHERE id = #{id}
 	</update>
 

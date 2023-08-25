@@ -48,7 +48,8 @@ public interface ArticleMapper {
 	// 요청 페이지, 페이지당 보여지는 목록 갯수에 따른 목록 반환
 	public List<ArticleDTO> findByAll(PageParams pageParams);
 	
-
+	/**조회수 조절*/
+	public void setHitcount(int articleId);
 }
 
 

@@ -9,13 +9,50 @@ tbody a{
 }
 tbody a:hover{
 	text-decoration: none;
-	color: green;
+	color:rgba(148,187,233,1);
+}
+.menu-btn{
+	color:#000;
+	border-color:rgba(72, 189, 215,0.7);
+}
+.menu-btn:hover{
+	background: rgba(72, 189, 215,0.7);
+	border:none;
+}
+
+.search-btn{
+	/*background: rgb(110, 85, 221);*/
+	background:#000;
+	color:#fff;
+	border:none;
+}
+.search-btn:hover{
+	background: #fff;
+	color:#000;
+	border: 1px solid #000;
+}
+.read-btn{
+	background:#000;
+	color:#fff;
+	border:none;
+}
+.read-btn:hover{
+	background:#fff;
+	color:#000;
+	border:1px solid #000;
+}
+
+.page-link{
+	color:black !important;
 }
 
  #wrapper {
     overflow-x: hidden;
  }
-
+#selected-page{
+	
+	color:pink !important;
+}
 #sidebar-wrapper {
   min-height: 100vh;
   margin-left: -15rem;

@@ -4,7 +4,7 @@
 <th:block th:replace="~{/layout/layoutV1 :: setContent(~{this :: title}, ~{this :: content})}">
 	
 	<th:block th:fragment="title">
-		<title>스프링 기반 게시판 연습페이지입니다.</title>
+		<title>게시판</title>
 	</th:block>
 
 	<th:block th:fragment="content">
@@ -13,7 +13,7 @@
 		<div class="container-fluid"  >
 			<h2 class="mt-4">[[${board.title}]] 
 				<span> 
-				<a href="#" th:href="@{/board/create(boardId=${board.boardId})}"><button type="button" class="btn btn-success">게시글 쓰기</button></a>
+				<a href="#" th:if="${session.loginMember != null}"   th:href="@{/board/create(boardId=${board.boardId})}"><button type="button" class="btn btn-success">게시글 쓰기</button></a>
 				</span>
 			</h2>
 			</div>
@@ -35,7 +35,7 @@
 					</div>
 					<input type="search" class="form-control" name="input">
 					<div class="input-group-append" id="button-addon4">
-						<button class="btn btn-success btn-search" type="submit">검색</button>
+						<button class="btn btn-success btn-search search-btn" type="submit">검색</button>
 					</div>
 				</div>
 			</form>
@@ -57,7 +57,7 @@
         <td>
             <span th:if="${article.levelNo == 1}" th:utext="'↳'"></span> <!-- 답글 들여쓰기 -->
             <span th:if="${article.levelNo == 2}" th:utext="'&nbsp;'+'&nbsp;'+'&nbsp;'+'&nbsp;'+'&nbsp;'+'↳'"></span> <!--대댓글 들여쓰기 -->
-            <a th:text="${article.subject}" th:href="@{/board/read/{articleId}(articleId=${article.articleId})}">
+            <a th:text="${article.subject}" th:href="@{/board/read/{articleId}/{hitcount}(articleId=${article.articleId}, hitcount=${article.hitcount})}">
                 게시글 제목입니다.
             </a>
         </td>
@@ -65,33 +65,42 @@
         <td th:text="${article.hitcount}">5</td>
         <td th:text="${article.regdate}">2023-05-05</td>
         <th>
+        <th:block th:if="${loginMember != null}">
             <a  th:if="${article.levelNo == 0 || article.levelNo == 1}" th:href="@{/board/reply/{articleId}(articleId=${article.articleId})}" th:text="답글">답글</a>
+            </th:block>
         </th> 
     </tr>
 </tbody>
 <!-- th:if="${article.levelNo == 0 || article.levelNo == 1}" -->
 			</table>
 
-			<ul
-				class="pagination h-100 justify-content-center align-items-center">
-
+			<ul class="pagination h-100 justify-content-center align-items-center">
 				<li class="page-item" th:if="${pagination.showFirst} ?: '' "><a class="page-link" 
 					th:text="${pagination.showFirst} ? '처음' : '' " th:href="@{/board/list(boardId=${pageParams.boardId} , page=1)}" >처음으로</a></li>
-				
 				<li class="page-item" th:if="${pagination.showPrevious} ?: '' "><a class="page-link" 
 					th:text="${pagination.showFirst} ? '이전' : '' " th:href="@{/board/list(boardId=${pageParams.boardId}, page=${pagination.previousStartPage})}">이전목록</a></li>
-
-				<li class="page-item active" th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
-					<a class="page-link" href="#" th:text="${i}" th:href="@{/board/list(boardId=${pageParams.boardId} , page=${i},type=${type},input=${input})}">1</a>
+				
+				<li class="page-item" aria-current="page" th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
+					<a class="page-link"   id="selected-page" href="#" th:text="${i}" th:href="@{/board/list(boardId=${pageParams.boardId} , page=${i},type=${type},input=${input})}">1</a>
 				</li>
-
+				
 				<li class="page-item" th:if="${pagination.showNext} ?: '' "><a class="page-link" 
 					th:text="${pagination.showLast} ? '다음' : '' " th:href="@{/board/list(boardId=${pageParams.boardId}, page=${pagination.nextStartPage})}">다음목록</a></li>
 				<li class="page-item" th:if="${pagination.showLast} ?: '' "><a class="page-link" 
 					th:text="${pagination.showLast} ? '끝으로' : '' " th:href="@{/board/list(boardId=${pageParams.boardId}, page=${pagination.totalPages})}">끝으로</a></li>
 			</ul>
 		</div>
+		
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 페이지 요소 클릭 시 배경 색상 변경
+    document.querySelector('#selected-page').addEventListener('click', function() {
+        // 클릭한 페이지 요소의 배경 색상 변경
+        this.style.background = 'black !important' ;
+    });
+});
+</script>
+		
 	</th:block>
 </th:block>
-
 </html>

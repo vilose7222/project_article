@@ -47,7 +47,7 @@ public class ArticleServiceTest {
 	@DisplayName("게시글 상세보기 테스트")
 	public void showArticleTest() {
 		ArticleDTO opened = null;
-		opened = articleService.showArticle(78);
+		opened = articleService.showArticle(2);
 		log.info(opened.toString());
 	}
 	
@@ -65,8 +65,8 @@ public class ArticleServiceTest {
 	}
 	
 	@Test
-//	@Disabled
-//	@Transactional
+	@Disabled
+	@Transactional
 	@DisplayName("게시글 삭제 테스트")
 	public void deleteArticleTest() {
 		ArticleDTO article = ArticleDTO.builder()

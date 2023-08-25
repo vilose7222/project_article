@@ -38,4 +38,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.findById(id);
 	}
 
+	@Override
+	@Transactional
+	public void editMember(Member member) {
+		memberMapper.update(member);
+	}
 }

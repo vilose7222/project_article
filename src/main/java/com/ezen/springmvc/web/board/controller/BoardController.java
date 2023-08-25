@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ezen.springmvc.domain.board.dto.ArticleDTO;
@@ -18,6 +19,7 @@ import com.ezen.springmvc.domain.board.service.ArticleService;
 import com.ezen.springmvc.domain.board.service.BoardService;
 import com.ezen.springmvc.domain.common.web.PageParams;
 import com.ezen.springmvc.domain.common.web.Pagination;
+import com.ezen.springmvc.domain.member.dto.Member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +39,12 @@ public class BoardController {
 
 	@GetMapping("/list")
 	public String list(@RequestParam(value="boardId", required = false, defaultValue = "10") int boardId,
-			           @RequestParam(value= "page", required = false, defaultValue = "1") int page, Model model,
-			           @RequestParam(value="type", required = false) String type, @RequestParam(value="input",required = false) String input) {
+			           @RequestParam(value= "page", required = false, defaultValue = "1") int page, 
+			           @RequestParam(value="type", required = false) String type,
+			           @RequestParam(value="input",required = false) String input,
+			           @SessionAttribute(name="loginMem", required = false)Member loginMem,
+			           
+			           Model model) {
 		int rowCount = 0;
 		PageParams pageParams = PageParams.builder()
 										  .boardId(boardId)
@@ -60,7 +66,7 @@ public class BoardController {
 		model.addAttribute("pageParams", pageParams);
 	    model.addAttribute("type", pageParams.getType());
 	    model.addAttribute("input", pageParams.getInput());
-
+	    model.addAttribute("loginMem",loginMem);
 		return "board/list";
 	}
 	
@@ -83,10 +89,15 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	@GetMapping("/read/{articleId}")
-	public String read(Model model, @PathVariable("articleId") int articleId ,ArticleDTO articleDTO) {
+	@GetMapping("/read/{articleId}/{hitcount}")
+	public String read(@PathVariable("articleId") int articleId ,ArticleDTO articleDTO,
+			 		   @SessionAttribute(name="loginMember", required = false)Member loginMember,
+			 		   @PathVariable("hitcount") int hitcount,
+			 		   	Model model) {
 		articleDTO = articleService.showArticle(articleId);
+	
 		model.addAttribute("article",articleDTO);
+		  model.addAttribute("loginMember",loginMember);
 		return"board/read";
 	}
 	

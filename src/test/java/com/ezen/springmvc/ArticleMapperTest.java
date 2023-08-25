@@ -166,4 +166,9 @@ public class ArticleMapperTest {
 	      log.info("검색된 게시글 : {}", article);
 	   });
 	}
+	@Test
+	@Disabled
+	public void setHitcountTest() {
+		articleMapper.setHitcount(2);
+	}
 }

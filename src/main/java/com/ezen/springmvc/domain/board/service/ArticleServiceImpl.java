@@ -27,6 +27,7 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	public ArticleDTO showArticle(int articleId) {
 		 ArticleDTO article = articleMapper.openArticle(articleId);
+		 articleMapper.setHitcount(articleId);
 		 return article;
 		
 	}

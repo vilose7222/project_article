@@ -31,6 +31,8 @@ public interface ArticleService {
 	/** 페이징관련 메서드... */   
 	public List<ArticleDTO> getList(PageParams pageParams);
 	
+	/** 조회수 관리*/
+	
 	
 	
 	

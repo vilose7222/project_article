@@ -142,6 +142,7 @@
 				subject,
 				board_id,
 				content,
+				hitcount,
 				passwd,
 				regdate,
 				group_no,
@@ -243,7 +244,12 @@
        </where>
    </select>
 
-	
+	<!-- 조회수 조절 -->
+	<update id="setHitcount">
+	UPDATE article
+	SET hitcount = hitcount + 1
+	WHERE article_id = #{articleId}
+	</update>
 	
 	
 </mapper>
